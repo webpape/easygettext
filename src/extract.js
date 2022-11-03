@@ -56,6 +56,13 @@ function preprocessScript(data, type) {
     const {parse, compileTemplate} = require('@vue/compiler-sfc');
     const vueFile = parse(data).descriptor;
 
+    if (vueFile.scriptSetup) {
+      contents.push({
+        content: vueFile.scriptSetup.content.trim(),
+        lang: vueFile.scriptSetup.lang || 'js',
+      });
+    }
+
     if (vueFile.script) {
       contents.push({
         content: vueFile.script.content.trim(),
