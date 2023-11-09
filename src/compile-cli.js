@@ -11,6 +11,7 @@ const minimist = require('minimist');
 const argv = minimist(process.argv.slice(2));
 const files = argv._.sort() || [];
 const outputFile = argv.output || null;
+const isIncludeFuzzy = argv.fuzzy || false
 
 if (!files) {
   console.log('Usage:\n\tcompile [--output OUTFILE] <FILES>');
@@ -24,7 +25,7 @@ for (let file of files) {
   console.log('[gettext] processing PO file:', file);
   try {
     const poContents = fs.readFileSync(file, {encoding: 'utf-8'}).toString();
-    const data = compile.po2json(poContents);
+    const data = compile.po2json(poContents, isIncludeFuzzy);
     const lang = data.headers.Language;
     if (!translationData[lang]) {
       translationData[lang] = data.messages;

@@ -20,12 +20,14 @@ const Pofile = require('pofile');
  *   }
  * }
  */
-function sanitizePoData(poItems) {
+function sanitizePoData(poItems, isIncludeFuzzy=false) {
   const messages = {};
 
   for (let item of poItems) {
     const ctx = item.msgctxt || '';
-    if (item.msgstr[0] && item.msgstr[0].length > 0 && !item.flags.fuzzy && !item.obsolete) {
+    const isSkipFuzzy = isIncludeFuzzy ? true : !item.flags.fuzzy
+
+    if (item.msgstr[0] && item.msgstr[0].length > 0 && isSkipFuzzy && !item.obsolete) {
       if (!messages[item.msgid]) {
         messages[item.msgid] = {};
       }
@@ -44,14 +46,14 @@ function sanitizePoData(poItems) {
 }
 
 
-function po2json(poContent) {
+function po2json(poContent, isIncludeFuzzy=false) {
   const catalog = Pofile.parse(poContent);
   if (!catalog.headers.Language) {
     throw new Error('No Language headers found!');
   }
   return {
     headers: catalog.headers,
-    messages: sanitizePoData(catalog.items),
+    messages: sanitizePoData(catalog.items, isIncludeFuzzy),
   };
 }
 
