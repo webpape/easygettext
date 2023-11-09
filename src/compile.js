@@ -46,7 +46,7 @@ function sanitizePoData(poItems, isIncludeFuzzy=false) {
 }
 
 
-function po2json(poContent, isIncludeFuzzy=false) {
+function po2json(poContent, isIncludeFuzzy=true) {
   const catalog = Pofile.parse(poContent);
   if (!catalog.headers.Language) {
     throw new Error('No Language headers found!');

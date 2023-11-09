@@ -11,7 +11,7 @@ const minimist = require('minimist');
 const argv = minimist(process.argv.slice(2));
 const files = argv._.sort() || [];
 const outputFile = argv.output || null;
-const isIncludeFuzzy = argv.fuzzy || false
+const isIncludeFuzzy = argv.nofuzzy || true
 
 if (!files) {
   console.log('Usage:\n\tcompile [--output OUTFILE] <FILES>');
